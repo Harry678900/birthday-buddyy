@@ -1,0 +1,277 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Rememberme - Dashboard</title>
+    <link rel="stylesheet" href="style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+</head>
+<body>
+    <div class="dashboard-container">
+        <!-- Mobile Overlay -->
+        <div class="mobile-overlay" id="mobileOverlay"></div>
+        
+        <!-- Sidebar -->
+        <div class="sidebar" id="sidebar">
+            <div class="sidebar-header">
+                <div class="logo">
+                    <i class="fas fa-birthday-cake"></i>
+                    <span>Remember Me</span>
+                </div>
+            </div>
+            
+            <nav class="sidebar-nav">
+                <a href="#" class="nav-item active" data-section="Overview">
+                    <i class="fas fa-home"></i>
+                    <span>Home</span>
+                </a>
+                <a href="#" class="nav-item" data-section="birthdays">
+                    <i class="fas fa-calendar-alt"></i>
+                    <span>Choco Wish</span>
+                </a>
+                <a href="#" class="nav-item" data-section="add-birthday">
+                    <i class="fas fa-plus"></i>
+                    <span>Add Wish</span>
+                </a>
+                <a href="#" class="nav-item" data-section="settings">
+                    <i class="fas fa-cog"></i>
+                    <span>Settings</span>
+                </a>
+            </nav>
+            
+            <div class="sidebar-footer">
+                <div class="user-info">
+                    <img src="https://via.placeholder.com/40" alt="User" id="userAvatar">
+                    <div class="user-details">
+                        <span id="userName">John Doe</span>
+                        <span id="userEmail">john.doe@gmail.com</span>
+                    </div>
+                </div>
+                <button class="logout-btn" id="logoutBtn">
+                    <i class="fas fa-sign-out-alt"></i>
+                    Logout
+                </button>
+            </div>
+        </div>
+
+        <!-- Main Content -->
+        <div class="main-content">
+            <!-- Header -->
+            <header class="header">
+                <div class="header-left">
+                    <button class="mobile-menu-toggle" id="mobileMenuToggle" aria-label="Toggle menu">
+                        <i class="fas fa-bars"></i>
+                    </button>
+                    <h1 id="pageTitle">AURA EVENTS</h1>
+                    <p id="pageSubtitle">Welcome back!.CAN YOU REMEMBER THIS? </p>
+                </div>
+                <div class="header-right">
+                    <div class="notification-bell">
+                        <i class="fas fa-bell"></i>
+                    </div>
+                </div>
+            </header>
+
+            <!-- Content Sections -->
+            <div class="content">
+                <!-- Overview Section -->
+                <div class="section active" id="Overview">
+                    <div class="stats-grid">
+                        <div class="stat-card">
+                            <div class="stat-icon">
+                                <i class="fas fa-users"></i>
+                            </div>
+                            <div class="stat-info">
+                                <h3>Total Contacts</h3>
+                                <p class="stat-number">24</p>
+                            </div>
+                        </div>
+                        
+                        <div class="stat-card">
+                            <div class="stat-icon">
+                                <i class="fas fa-birthday-cake"></i>
+                            </div>
+                            <div class="stat-info">
+                                <h3>This Month</h3>
+                                <p class="stat-number">5</p>
+                            </div>
+                        </div>
+                        
+                        <div class="stat-card">
+                            <div class="stat-icon">
+                                <i class="fas fa-calendar-check"></i>
+                            </div>
+                            <div class="stat-info">
+                                <h3>Next Birthday</h3>
+                                <p class="stat-number">2 days</p>
+                            </div>
+                        </div>
+                        
+                        <div class="stat-card">
+                            <div class="stat-icon">
+                                <i class="fas fa-map-marker-alt"></i>
+                            </div>
+                            <div class="stat-info">
+                                <h3>Location Active</h3>
+                                <p class="stat-number">Yes</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="upcoming-birthdays">
+                        <h2>Upcoming Birthdays</h2>
+                        <div class="birthday-list" id="upcomingBirthdays">
+                            <!-- Birthday items will be added here -->
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Birthdays Section -->
+                <div class="section" id="birthdays">
+                    <div class="section-header">
+                        <h2>All Birthdays</h2>
+                        <button class="add-btn" onclick="showAddBirthdayForm()">
+                            <i class="fas fa-plus"></i>
+                            Add New
+                        </button>
+                    </div>
+                    
+                    <div class="birthday-grid" id="allBirthdays">
+                        <!-- Birthday cards will be added here -->
+                    </div>
+                </div>
+
+                <!-- Add Birthday Section -->
+                <div class="section" id="add-birthday">
+                    <div class="form-container">
+                        <h2>Add New Birthday</h2>
+                        <form id="addBirthdayForm" class="birthday-form">
+                            <div class="form-group">
+                                <label for="personName">Person's Name</label>
+                                <input type="text" id="personName" required>
+                            </div>
+                            
+                            <div class="form-group">
+                                <label for="birthDate">Birth Date</label>
+                                <input type="date" id="birthDate" required>
+                            </div>
+                            
+                            <div class="form-group">
+                                <label for="relationship">Relationship</label>
+                                <select id="relationship">
+                                    <option value="family">Family</option>
+                                    <option value="friend">Friend</option>
+                                    <option value="colleague">Colleague</option>
+                                    <option value="other">Other</option>
+                                </select>
+                            </div>
+                            
+                            <div class="form-group">
+                                <label for="phoneNumber">WhatsApp Number (Optional)</label>
+                                <input type="tel" id="phoneNumber" placeholder="e.g., +1234567890" pattern="[+]?[0-9]{10,15}">
+                                <small style="color: #666; font-size: 12px;">Include country code (e.g., +1234567890)</small>
+                            </div>
+                            
+                            <div class="form-group">
+                                <label for="email">Email Address (Optional)</label>
+                                <input type="email" id="email" placeholder="e.g., person@example.com">
+                                <small style="color: #666; font-size: 12px;">For sending birthday wishes via Gmail</small>
+                            </div>
+                            
+                            <div class="form-group">
+                                <label for="notes">Notes (Optional)</label>
+                                <textarea id="notes" rows="3" placeholder="Gift ideas, preferences, etc."></textarea>
+                            </div>
+                            
+                            <div class="form-actions">
+                                <button type="button" class="cancel-btn" onclick="hideAddBirthdayForm()">Cancel</button>
+                                <button type="submit" class="save-btn">Save Birthday</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+
+                <!-- Settings Section -->
+                <div class="section" id="settings">
+                    <h2>Settings</h2>
+                    <div class="settings-grid">
+                        <div class="setting-card">
+                            <h3>Notifications</h3>
+                            <div class="setting-item">
+                                <span>Browser Notifications</span>
+                                <label class="switch">
+                                    <input type="checkbox" id="browserNotifications" checked>
+                                    <span class="slider"></span>
+                                </label>
+                            </div>
+                            <div id="notificationStatus" style="margin-top: 10px; padding: 10px; border-radius: 6px; font-size: 14px;">
+                                <!-- Status will be shown here -->
+                            </div>
+                            <button id="requestNotificationPermissionBtn" style="margin-top: 10px; padding: 8px 16px; background: #007bff; color: white; border: none; border-radius: 6px; cursor: pointer; display: none;">
+                                <i class="fas fa-bell"></i> Enable Browser Notifications
+                            </button>
+                        </div>
+                        
+                        <div class="setting-card">
+                            <h3>Location Services</h3>
+                            <div class="setting-item">
+                                <span>Enable Geo-fencing</span>
+                                <label class="switch">
+                                    <input type="checkbox" id="geofencingToggle">
+                                    <span class="slider"></span>
+                                </label>
+                            </div>
+                            <div class="setting-item">
+                                <span>Background Location</span>
+                                <label class="switch">
+                                    <input type="checkbox" id="backgroundLocation">
+                                    <span class="slider"></span>
+                                </label>
+                            </div>
+                            <div class="setting-item">
+                                <span>Geofence Radius</span>
+                                <select id="geofenceRadius" onchange="dashboard.updateGeofenceRadius(this.value)">
+                                    <option value="500">500m</option>
+                                    <option value="1000" selected>1km</option>
+                                    <option value="2000">2km</option>
+                                    <option value="5000">5km</option>
+                                </select>
+                            </div>
+                        </div>
+                        
+                        <div class="setting-card">
+                            <h3>Geofence Management</h3>
+                            <div class="geofence-controls">
+                                <button class="add-geofence-btn" onclick="dashboard.showAddGeofenceForm()">
+                                    <i class="fas fa-plus"></i> Add Geofence
+                                </button>
+                                <button class="use-current-location-btn" onclick="dashboard.addCurrentLocationAsGeofence()">
+                                    <i class="fas fa-map-marker-alt"></i> Use Current Location
+                                </button>
+                            </div>
+                            <div class="geofence-list" id="geofenceList">
+                                <!-- Geofences will be listed here -->
+                            </div>
+                        </div>
+                        
+                        <div class="setting-card">
+                            <h3>Privacy</h3>
+                            <div class="setting-item">
+                                <span>Share My Location</span>
+                                <label class="switch">
+                                    <input type="checkbox" id="shareLocation">
+                                    <span class="slider"></span>
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="dashboard.js"></script>
+</body>
+</html>

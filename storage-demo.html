@@ -1,0 +1,292 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Local Storage Demo - Birthday Buddy</title>
+    <link rel="stylesheet" href="auth-style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <style>
+        .demo-container {
+            max-width: 800px;
+            margin: 50px auto;
+            padding: 20px;
+        }
+        .demo-section {
+            background: white;
+            border-radius: 12px;
+            padding: 24px;
+            margin-bottom: 20px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+        .demo-section h3 {
+            color: #333;
+            margin-bottom: 16px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        .demo-buttons {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 12px;
+            margin-bottom: 20px;
+        }
+        .demo-btn {
+            padding: 12px 20px;
+            border: none;
+            border-radius: 8px;
+            background: #007bff;
+            color: white;
+            cursor: pointer;
+            font-weight: 500;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        .demo-btn:hover {
+            background: #0056b3;
+            transform: translateY(-2px);
+        }
+        .demo-btn.danger {
+            background: #dc3545;
+        }
+        .demo-btn.danger:hover {
+            background: #c82333;
+        }
+        .demo-btn.success {
+            background: #28a745;
+        }
+        .demo-btn.success:hover {
+            background: #218838;
+        }
+        .demo-btn.warning {
+            background: #ffc107;
+            color: #212529;
+        }
+        .demo-btn.warning:hover {
+            background: #e0a800;
+        }
+        .storage-info {
+            background: #f8f9fa;
+            border-radius: 8px;
+            padding: 16px;
+            margin-top: 16px;
+        }
+        .storage-info h4 {
+            margin-bottom: 12px;
+            color: #495057;
+        }
+        .storage-info p {
+            margin: 8px 0;
+            color: #6c757d;
+        }
+        .preference-form {
+            display: grid;
+            grid-template-columns: 1fr 1fr auto;
+            gap: 12px;
+            align-items: end;
+        }
+        .preference-form input {
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 6px;
+        }
+        .preference-form button {
+            padding: 10px 16px;
+            background: #007bff;
+            color: white;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+    <div class="demo-container">
+        <div class="demo-section">
+            <h3><i class="fas fa-database"></i> Local Storage Management</h3>
+            <div class="demo-buttons">
+                <button class="demo-btn success" onclick="exportUserData()">
+                    <i class="fas fa-download"></i> Export Data
+                </button>
+                <button class="demo-btn warning" onclick="importUserData()">
+                    <i class="fas fa-upload"></i> Import Data
+                </button>
+                <button class="demo-btn danger" onclick="clearAllData()">
+                    <i class="fas fa-trash"></i> Clear All Data
+                </button>
+            </div>
+        </div>
+
+        <div class="demo-section">
+            <h3><i class="fas fa-cog"></i> User Preferences</h3>
+            <div class="preference-form">
+                <input type="text" id="prefKey" placeholder="Preference Key">
+                <input type="text" id="prefValue" placeholder="Preference Value">
+                <button onclick="savePreference()">Save</button>
+            </div>
+            <div class="storage-info" id="preferencesInfo">
+                <h4>Current Preferences:</h4>
+                <p>No preferences saved yet.</p>
+            </div>
+        </div>
+
+        <div class="demo-section">
+            <h3><i class="fas fa-info-circle"></i> Storage Information</h3>
+            <div class="storage-info" id="storageInfo">
+                <h4>Local Storage Status:</h4>
+                <p>Loading...</p>
+            </div>
+        </div>
+
+        <div class="demo-section">
+            <h3><i class="fas fa-users"></i> User Management</h3>
+            <div class="demo-buttons">
+                <button class="demo-btn" onclick="showUsers()">
+                    <i class="fas fa-eye"></i> View Users
+                </button>
+                <button class="demo-btn" onclick="addTestUser()">
+                    <i class="fas fa-plus"></i> Add Test User
+                </button>
+                <button class="demo-btn" onclick="checkAuthStatus()">
+                    <i class="fas fa-user-check"></i> Check Auth
+                </button>
+            </div>
+            <div class="storage-info" id="usersInfo">
+                <h4>User Information:</h4>
+                <p>Click "View Users" to see current users.</p>
+            </div>
+        </div>
+
+        <div class="demo-section">
+            <h3><i class="fas fa-home"></i> Navigation</h3>
+            <div class="demo-buttons">
+                <a href="login.html" class="demo-btn">
+                    <i class="fas fa-sign-in-alt"></i> Go to Login
+                </a>
+                <a href="register.html" class="demo-btn">
+                    <i class="fas fa-user-plus"></i> Go to Register
+                </a>
+                <button class="demo-btn" onclick="logout()">
+                    <i class="fas fa-sign-out-alt"></i> Logout
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <script src="auth.js"></script>
+    <script>
+        // Demo-specific functions
+        function savePreference() {
+            const key = document.getElementById('prefKey').value;
+            const value = document.getElementById('prefValue').value;
+            
+            if (!key || !value) {
+                alert('Please enter both key and value');
+                return;
+            }
+            
+            saveUserPreference(key, value);
+            updatePreferencesInfo();
+            
+            // Clear inputs
+            document.getElementById('prefKey').value = '';
+            document.getElementById('prefValue').value = '';
+        }
+
+        function updatePreferencesInfo() {
+            const infoDiv = document.getElementById('preferencesInfo');
+            if (authManager) {
+                const prefs = authManager.getUserPreferences();
+                const prefsList = Object.keys(prefs).map(key => 
+                    `<strong>${key}:</strong> ${prefs[key]}`
+                ).join('<br>');
+                
+                infoDiv.innerHTML = `
+                    <h4>Current Preferences:</h4>
+                    ${prefsList || '<p>No preferences saved yet.</p>'}
+                `;
+            }
+        }
+
+        function updateStorageInfo() {
+            const infoDiv = document.getElementById('storageInfo');
+            if (authManager) {
+                const users = authManager.users;
+                const currentUser = authManager.currentUser;
+                const lastLogin = authManager.getLastLoginTime();
+                const storageAvailable = authManager.checkStorageQuota();
+                
+                infoDiv.innerHTML = `
+                    <h4>Local Storage Status:</h4>
+                    <p><strong>Users stored:</strong> ${users.length}</p>
+                    <p><strong>Current user:</strong> ${currentUser ? currentUser.name : 'None'}</p>
+                    <p><strong>Last login:</strong> ${lastLogin ? lastLogin.toLocaleString() : 'Never'}</p>
+                    <p><strong>Storage available:</strong> ${storageAvailable ? 'Yes' : 'No'}</p>
+                `;
+            }
+        }
+
+        function showUsers() {
+            const infoDiv = document.getElementById('usersInfo');
+            if (authManager) {
+                const users = authManager.users;
+                if (users.length === 0) {
+                    infoDiv.innerHTML = '<h4>User Information:</h4><p>No users registered yet.</p>';
+                } else {
+                    const usersList = users.map(user => 
+                        `<div style="margin: 8px 0; padding: 8px; background: #e9ecef; border-radius: 4px;">
+                            <strong>${user.name}</strong> (${user.email})<br>
+                            <small>ID: ${user.id} | Created: ${new Date(user.createdAt).toLocaleDateString()}</small>
+                        </div>`
+                    ).join('');
+                    
+                    infoDiv.innerHTML = `
+                        <h4>User Information:</h4>
+                        ${usersList}
+                    `;
+                }
+            }
+        }
+
+        function addTestUser() {
+            if (authManager) {
+                const testUser = {
+                    id: Date.now().toString(),
+                    name: 'Test User',
+                    email: 'test@example.com',
+                    password: 'password123',
+                    imageUrl: 'https://via.placeholder.com/40',
+                    createdAt: new Date().toISOString()
+                };
+                
+                authManager.users.push(testUser);
+                authManager.saveUsers();
+                showUsers();
+                updateStorageInfo();
+                alert('Test user added successfully!');
+            }
+        }
+
+        function checkAuthStatus() {
+            if (authManager) {
+                const isLoggedIn = authManager.isLoggedIn();
+                const currentUser = authManager.getCurrentUser();
+                alert(`Auth Status:\nLogged in: ${isLoggedIn}\nCurrent user: ${currentUser ? currentUser.name : 'None'}`);
+            }
+        }
+
+        // Initialize demo page
+        document.addEventListener('DOMContentLoaded', function() {
+            setTimeout(() => {
+                updateStorageInfo();
+                updatePreferencesInfo();
+                showUsers();
+            }, 1000);
+        });
+    </script>
+</body>
+</html> 
